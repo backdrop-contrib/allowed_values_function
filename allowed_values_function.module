@@ -53,16 +53,18 @@ function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
  */
 function allowed_values_function_field_function_validate($form, &$form_state) {
         
+  // Clean up our function name, just in case the user entered extra characters
   $fn = ($form_state['values']['field']['settings']['allowed_values_function'] ?? '');
-  $fn = str_replace("(", "", $fn);
-  $fn = str_replace(")", "", $fn);
-  $fn = str_replace(";", "", $fn);
+  $fn = str_replace('(', '', $fn);
+  $fn = str_replace(')', '', $fn);
+  $fn = str_replace(';', '', $fn);
   $fn = trim($fn);
       
   
-  // Save back to form_state so it will save.
-  $form_state['values']['field']['settings']['allowed_values_function'] = $fn;  
-    
+  // Save function name back to form/form_state so it will be submitted correctly.
+  form_set_value($form['field']['settings']['allowed_values_function'], $fn, $form_state);
+  
+  // Does the function exist?  If not, fail validation and tell the user.
   if ($fn && !function_exists($fn)) {
     form_set_error('field][settings][allowed_values_function', t('The function name you entered is invalid or does not exist. Please
                                                                           check the spelling and try again.'));
@@ -70,4 +72,5 @@ function allowed_values_function_field_function_validate($form, &$form_state) {
   
   
 } // ... validate
+
 
