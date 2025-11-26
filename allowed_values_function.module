@@ -10,8 +10,7 @@
  * @param unknown $form_id
  */
 function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
-  
-    
+     
   if ($form_id == 'field_ui_field_settings_form' || $form_id == 'field_ui_field_edit_form') {
 
     if (strstr(($form['#field']['type'] ?? ''), 'list_') || strstr(($form['field']['type']['#value'] ?? ''), 'list_')) {
@@ -59,31 +58,16 @@ function allowed_values_function_field_function_validate($form, &$form_state) {
   $fn = str_replace(")", "", $fn);
   $fn = str_replace(";", "", $fn);
   $fn = trim($fn);
-  
-    
+      
   
   // Save back to form_state so it will save.
   $form_state['values']['field']['settings']['allowed_values_function'] = $fn;  
     
   if ($fn && !function_exists($fn)) {
-    form_error($form['field']['settings']['allowed_values_function'], t('The function name you entered is invalid or does not exist. Please
+    form_set_error('field][settings][allowed_values_function', t('The function name you entered is invalid or does not exist. Please
                                                                           check the spelling and try again.'));
   }  
   
   
 } // ... validate
-
-
-
-
-
-
-
-
-function allowed_values_function_test() {
-  return array('cat' => 'Cat', 'dog' => 'Dog', 'mon' => 'Monkey');
-}
-
-
-
 
