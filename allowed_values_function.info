@@ -1,0 +1,4 @@
+name = Allowed Values Function
+description = Gives the ability to set a function name to call in the Field API, to populate the allowed values.
+backdrop = 1.x
+type = module

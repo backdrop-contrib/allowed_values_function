@@ -1,0 +1,90 @@
+<?php
+
+
+
+/**
+ * Implements hook_form_alter
+ * 
+ * @param unknown $form
+ * @param unknown $form_state
+ * @param unknown $form_id
+ */
+function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
+  
+  dpm($form_id);
+  
+  if ($form_id == 'field_ui_field_settings_form' || $form_id == 'field_ui_field_edit_form') {
+
+    if (strstr(($form['#field']['type'] ?? ''), 'list_') || strstr(($form['field']['type']['#value'] ?? ''), 'list_')) {
+      
+      $form['field']['settings']['allowed_values_function'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Allowed values function'),
+        '#default_value' => ($form['field']['settings']['allowed_values_function']['#value'] ?? ''),
+        '#description' => t('You may specify the name of a PHP function which returns an associative array
+                                of keys => values.  Do not include () after the function name or any other arguments or punctuation.
+                                Ex:  <em>my_module_get_vals</em>.  
+                                <br>This function should return an array. Ex:
+                                <code>return ["a" => "Apple", "b" => "Banana"];</code>
+                              If you enter anything in this field, the "Allowed values list" above <strong>will be ignored</strong>. 
+                              <br>If you wish to use the "Allowed values list", simply delete the name of the function entered here and save.'),
+      );
+      
+      
+      unset($form['field']['settings']['allowed_values_function_display']);
+      
+      $form['#validate'][] = 'allowed_values_function_field_function_validate';
+        
+    }
+    
+  } // field_ui_field_settings_form
+  
+  
+  
+  
+} // hook_form_alter
+
+
+
+
+/**
+ * The primary thing we want to do here is validate that the function specified actually exists.
+ * 
+ * @param unknown $form
+ * @param unknown $form_state
+ */
+function allowed_values_function_field_function_validate($form, &$form_state) {
+        
+  $fn = ($form_state['values']['field']['settings']['allowed_values_function'] ?? '');
+  $fn = str_replace("(", "", $fn);
+  $fn = str_replace(")", "", $fn);
+  $fn = str_replace(";", "", $fn);
+  $fn = trim($fn);
+  
+    
+  
+  // Save back to form_state so it will save.
+  $form_state['values']['field']['settings']['allowed_values_function'] = $fn;  
+    
+  if ($fn && !function_exists($fn)) {
+    form_error($form['field']['settings']['allowed_values_function'], t('The function name you entered is invalid or does not exist. Please
+                                                                          check the spelling and try again.'));
+  }  
+  
+  
+} // ... validate
+
+
+
+
+
+
+
+
+function allowed_values_function_test() {
+  return array('cat' => 'Cat', 'dog' => 'Dog', 'mon' => 'Monkey');
+}
+
+
+
+
