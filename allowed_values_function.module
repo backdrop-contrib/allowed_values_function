@@ -11,8 +11,7 @@
  */
 function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
   
-  dpm($form_id);
-  
+    
   if ($form_id == 'field_ui_field_settings_form' || $form_id == 'field_ui_field_edit_form') {
 
     if (strstr(($form['#field']['type'] ?? ''), 'list_') || strstr(($form['field']['type']['#value'] ?? ''), 'list_')) {
