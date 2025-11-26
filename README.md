@@ -1,7 +1,7 @@
 Allowed Values Function
 =================
 
-This module allows you to populate a list of options with the results of calling a custom function.
+This module allows you to populate a list field's options with the results of calling a custom function.
 
 Once enabled, in the Field UI, add a new list (ex: List (text)).  You will now see a box to enter
 a value for "Allowed values function".  This should be a function name only (no parenthesis), which
