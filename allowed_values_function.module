@@ -20,11 +20,10 @@ function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
         '#title' => t('Allowed values function'),
         '#default_value' => ($form['field']['settings']['allowed_values_function']['#value'] ?? ''),
         '#description' => t('You may specify the name of a PHP function which returns an associative array
-                                of keys => values.  Do not include () after the function name or any other arguments or punctuation.
-                                Ex:  <em>my_module_get_vals</em>.  
-                                <br>This function should return an array. Ex:
-                                <code>return ["a" => "Apple", "b" => "Banana"];</code>
-                              If you enter anything in this field, the "Allowed values list" above <strong>will be ignored</strong>. 
+                                of keys => values.  Do not add () after the function name or any other arguments or punctuation.
+                                <br>&nbsp; &nbsp; Ex:  <em>my_module_get_vals</em>.
+								<br>See how to implement your function (including expected arguments) in this module\'s included README.md.
+                              <br><br>If you enter anything in this field, the "Allowed values list" above <strong>will be ignored</strong>.
                               <br>If you wish to use the "Allowed values list", simply delete the name of the function entered here and save.'),
       );
       

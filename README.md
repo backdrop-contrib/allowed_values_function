@@ -11,10 +11,10 @@ For example, on the Configure field screen:
 
 `Allowed values function:  my_module_test`
 
-Then, in your module....
+Then, in your module your function should look like so, including the expected arguments:
 
 ```
-function my_module_test() {
+function my_module_test($field, $instance, $entity_type, $entity = NULL, $cacheable = FALSE) {
   return ['a' => 'Apple', 'ban' => 'Banana'];
 }
 ```
