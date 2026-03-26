@@ -11,9 +11,13 @@
  */
 function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
      
+  
+  
   if ($form_id == 'field_ui_field_settings_form' || $form_id == 'field_ui_field_edit_form') {
 
     if (strstr(($form['#field']['type'] ?? ''), 'list_') || strstr(($form['field']['type']['#value'] ?? ''), 'list_')) {
+      
+      
       
       $form['field']['settings']['allowed_values_function'] = array(
         '#type' => 'textfield',
@@ -22,9 +26,19 @@ function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
         '#description' => t('You may specify the name of a PHP function which returns an associative array
                                 of keys => values.  Do not add () after the function name or any other arguments or punctuation.
                                 <br>&nbsp; &nbsp; Ex:  <em>my_module_get_vals</em>.
-								<br>See how to implement your function (including expected arguments) in this module\'s included README.md.
-                              <br><br>If you enter anything in this field, the "Allowed values list" above <strong>will be ignored</strong>.
+								              <br>See how to implement your function (including expected arguments) in this module\'s included README.md.
+                              <br>If you enter anything in this field, the "Allowed values list" above <strong>will be ignored</strong>.
                               <br>If you wish to use the "Allowed values list", simply delete the name of the function entered here and save.'),
+      );
+
+      
+      $form['instance']['default_value_function'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Default value function'),
+        '#default_value' => ($form['#instance']['default_value_function'] ?? ''),
+        '#description' => t('Similar to the Allowed values function field, enter the name of a function which supplies a default value for this
+                             field. See the included README.md file for an example of what the function is expected to return.
+                              <br>You may leave this blank to have no particular default value, or if you are unsure what to enter.'),
       );
       
       
@@ -51,7 +65,7 @@ function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
  * @param unknown $form_state
  */
 function allowed_values_function_field_function_validate($form, &$form_state) {
-        
+        dpm($form_state);
   // Clean up our function name, just in case the user entered extra characters
   $fn = ($form_state['values']['field']['settings']['allowed_values_function'] ?? '');
   $fn = str_replace('(', '', $fn);
@@ -59,15 +73,35 @@ function allowed_values_function_field_function_validate($form, &$form_state) {
   $fn = str_replace(';', '', $fn);
   $fn = trim($fn);
       
+
+  $dfn = ($form_state['values']['instance']['default_value_function'] ?? '');
+  $dfn = str_replace('(', '', $dfn);
+  $dfn = str_replace(')', '', $dfn);
+  $dfn = str_replace(';', '', $dfn);
+  $dfn = trim($dfn);
+  
   
   // Save function name back to form/form_state so it will be submitted correctly.
-  form_set_value($form['field']['settings']['allowed_values_function'], $fn, $form_state);
+  if ($fn) {
+    form_set_value($form['field']['settings']['allowed_values_function'], $fn, $form_state);
+  }
+  if ($dfn) {
+    form_set_value($form['instance']['default_value_function'], $dfn, $form_state);
+  }
   
   // Does the function exist?  If not, fail validation and tell the user.
   if ($fn && !function_exists($fn)) {
-    form_set_error('field][settings][allowed_values_function', t('The function name you entered is invalid or does not exist. Please
+    form_set_error('field][settings][allowed_values_function', t('The function name you entered for "Allowed values" is invalid or does not exist. Please
                                                                           check the spelling and try again.'));
   }  
+
+  
+  // Does the function exist?  If not, fail validation and tell the user.
+  if ($dfn && !function_exists($dfn)) {
+    form_set_error('instance][default_value_function', t('The function name you entered for "Default value" is invalid or does not exist. Please
+                                                                          check the spelling and try again.'));
+  }
+  
   
   
 } // ... validate
