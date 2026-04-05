@@ -65,7 +65,7 @@ function allowed_values_function_form_alter(&$form, $form_state, $form_id) {
  * @param unknown $form_state
  */
 function allowed_values_function_field_function_validate($form, &$form_state) {
-        dpm($form_state);
+
   // Clean up our function name, just in case the user entered extra characters
   $fn = ($form_state['values']['field']['settings']['allowed_values_function'] ?? '');
   $fn = str_replace('(', '', $fn);
