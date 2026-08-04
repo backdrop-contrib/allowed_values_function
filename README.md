@@ -55,8 +55,15 @@ Installation
 Current Maintainers
 -------------------
 
-- [Richard Peacock](https://github.com/swampopus) (original creator for Backdrop CMS)
+- [Richard Peacock](https://github.com/swampopus)
 - Seeking additional maintainers.
+
+
+Credits
+-------
+
+- Created by Backdrop CMS by [Richard Peacock](https://github.com/swampopus)
+- Development sponsored by [FlightPath Academics](https://flightpathacademics.com)
 
 
 License
