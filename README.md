@@ -62,7 +62,7 @@ Current Maintainers
 Credits
 -------
 
-- Created by Backdrop CMS by [Richard Peacock](https://github.com/swampopus)
+- Created for Backdrop CMS by [Richard Peacock](https://github.com/swampopus)
 - Development sponsored by [FlightPath Academics](https://flightpathacademics.com)
 
 
